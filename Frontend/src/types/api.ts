@@ -61,9 +61,11 @@ export interface MatchSummary {
   venueName?: string | null;
   hostCity?: string | null;
   homeTeamName?: string | null;
+  homeTeamId?: number | null;
   homeTeamCode?: string | null;
   homeTeamFlag?: string | null;
   awayTeamName?: string | null;
+  awayTeamId?: number | null;
   awayTeamCode?: string | null;
   awayTeamFlag?: string | null;
   homePlaceholder?: string | null;
@@ -117,4 +119,61 @@ export interface Tournament {
   teamCount: number;
   matchCount: number;
   status: string;
+}
+
+export interface PromptVersion {
+  id: number;
+  promptType: string;
+  name: string;
+  version: number;
+  versionKey: string;
+  schemaVersion: string;
+  changeSummary: string | null;
+  changeReason: string | null;
+  status: string;
+  publishedAt: string | null;
+  systemPrompt: string;
+  userPromptTemplate: string;
+  outputJsonSchema: unknown;
+  matchCount: number;
+}
+
+export interface Stage {
+  id: number;
+  name: string;
+  code: string;
+  stageType: "group" | "knockout";
+  sequence: number;
+  matchCount: number;
+}
+
+export interface DebateStatement {
+  id: number;
+  matchId: number;
+  modelName: string;
+  modelSlug: string;
+  personality: string | null;
+  predictedHomeScore: number;
+  predictedAwayScore: number;
+  statement: string;
+  homeTeam: string | null;
+  awayTeam: string | null;
+}
+
+export interface UserProfile {
+  publicId: string;
+  displayName: string;
+  trustedModelId: number | null;
+  trustedModelName: string | null;
+  points: Num;
+  predictions: number;
+}
+
+export interface UserLeaderboardRow {
+  publicId: string;
+  displayName: string;
+  trustedModelName: string | null;
+  trustedModelSlug: string | null;
+  points: Num;
+  predictions: number;
 }

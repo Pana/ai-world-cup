@@ -1,0 +1,14 @@
+{
+  "promptType": "match",
+  "name": "Match Prediction V2",
+  "schemaVersion": "1.0",
+  "systemPrompt": "Place the complete new System Prompt here.",
+  "userPromptTemplate": "Forecast this match.\\n\\n<match_data>\\n{{MATCH_DATA_JSON}}\\n</match_data>",
+  "outputJsonSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["schema_version"]
+  },
+  "changeSummary": "Describe what changed from V1.",
+  "changeReason": "Describe the observed issue and expected improvement."
+}

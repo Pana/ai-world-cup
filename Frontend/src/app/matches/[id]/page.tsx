@@ -5,6 +5,7 @@ import { TeamFlag } from "@/components/TeamFlag";
 import { PredictionCard } from "@/components/PredictionCard";
 import { Loading, ErrorState, EmptyState } from "@/components/States";
 import { formatKickoff } from "@/lib/format";
+import { UserPredictionForm } from "@/components/UserPredictionForm";
 
 export default function MatchDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -16,6 +17,9 @@ export default function MatchDetail({ params }: { params: Promise<{ id: string }
 
   const { match: m, predictions } = data;
   const finished = m.status === "finished";
+  const locked = m.status !== "scheduled" || new Date(m.scheduledAt) <= new Date();
+  const homeName = m.homeTeamName ?? m.homePlaceholder ?? "TBD";
+  const awayName = m.awayTeamName ?? m.awayPlaceholder ?? "TBD";
 
   return (
     <div className="space-y-8">
@@ -26,23 +30,33 @@ export default function MatchDetail({ params }: { params: Promise<{ id: string }
         <div className="mt-3 flex items-center justify-center gap-6">
           <div className="flex flex-col items-center gap-2">
             <TeamFlag name={m.homeTeamName} code={m.homeTeamCode} size={48} />
-            <span className="font-bold">{m.homeTeamName ?? m.homePlaceholder ?? "TBD"}</span>
+            <span className="max-w-32 text-center font-bold">{homeName}</span>
           </div>
           <div className="text-3xl font-black">
             {finished ? `${m.homeScore90 ?? "-"} : ${m.awayScore90 ?? "-"}` : "vs"}
           </div>
           <div className="flex flex-col items-center gap-2">
             <TeamFlag name={m.awayTeamName} code={m.awayTeamCode} size={48} />
-            <span className="font-bold">{m.awayTeamName ?? m.awayPlaceholder ?? "TBD"}</span>
+            <span className="max-w-32 text-center font-bold">{awayName}</span>
           </div>
         </div>
         <div className="mt-3 text-sm text-slate-400">
-          {formatKickoff(m.scheduledAt)} · {m.venueName ?? ""} {m.hostCity ? `, ${m.hostCity}` : ""}
+          {formatKickoff(m.scheduledAt)}
+          {m.venueName ? ` · ${m.venueName}` : ""}
+          {m.hostCity ? `, ${m.hostCity}` : ""}
         </div>
         <div className="mt-1 text-xs text-slate-500">
           Status: {m.status}{m.promptVersion ? ` · Prompt ${m.promptVersion}` : ""}
         </div>
+        {finished && m.resultType && (
+          <div className="mt-2 text-xs text-slate-400">
+            {m.resultType === "extra_time" && `After extra time: ${m.homeScoreAfterExtraTime}:${m.awayScoreAfterExtraTime}`}
+            {m.resultType === "penalties" && `Penalties: ${m.homePenaltyScore}:${m.awayPenaltyScore}`}
+          </div>
+        )}
       </header>
+
+      {!finished && <UserPredictionForm matchId={m.id} homeTeam={homeName} awayTeam={awayName} locked={locked} />}
 
       <section>
         <h2 className="mb-3 text-lg font-bold">Model predictions</h2>

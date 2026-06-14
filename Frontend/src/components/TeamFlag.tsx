@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 function flagFile(name?: string | null): string | null {
   if (!name) return null;
@@ -22,7 +23,8 @@ export function TeamFlag({ name, code, size = 28 }: { name?: string | null; code
     );
   }
   return (
-    <img src={`/flags/${file}.svg`} alt={name ?? "flag"} height={size * 0.7}
+    <Image src={`/flags/${file}.svg`} alt={name ?? "flag"} width={size} height={Math.round(size * 0.7)}
+      unoptimized
       className="rounded-sm" onError={() => setBroken(true)} />
   );
 }

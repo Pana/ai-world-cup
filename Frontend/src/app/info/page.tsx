@@ -13,7 +13,10 @@ export default function Info() {
     <div className="space-y-8">
       <header>
         <h1 className="text-3xl font-black">{tournament?.name ?? "FIFA World Cup"} {tournament?.edition ?? "2026"}</h1>
-        <p className="text-slate-400">Hosts: United States · Canada · Mexico · 48 teams · 104 matches</p>
+        <p className="text-slate-400">
+          Hosts: {Array.isArray(tournament?.hostCountries) ? tournament.hostCountries.join(" · ") : "United States · Canada · Mexico"}
+          {" · "}{tournament?.teamCount ?? 48} teams · {tournament?.matchCount ?? 104} matches
+        </p>
       </header>
 
       <section className="rounded-xl border border-white/10 bg-white/5 p-5 text-sm text-slate-300">

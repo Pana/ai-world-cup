@@ -1,0 +1,101 @@
+[
+  {
+    "name": "GPT",
+    "provider": "OpenAI",
+    "slug": "gpt",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/gpt.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "Claude",
+    "provider": "Anthropic",
+    "slug": "claude",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/claude.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "Gemini",
+    "provider": "Google",
+    "slug": "gemini",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/gemini.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "Grok",
+    "provider": "xAI",
+    "slug": "grok",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/grok.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "Kimi",
+    "provider": "Moonshot AI",
+    "slug": "kimi",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/kimi.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "DeepSeek",
+    "provider": "DeepSeek",
+    "slug": "deepseek",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/deepseek.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "GLM",
+    "provider": "Zhipu AI",
+    "slug": "glm",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/glm.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "Qianwen",
+    "provider": "Alibaba Cloud",
+    "slug": "qianwen",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/qianwen.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  },
+  {
+    "name": "Doubao",
+    "provider": "ByteDance",
+    "slug": "doubao",
+    "modelKey": "",
+    "version": "configure-me",
+    "avatarUrl": "assets/models/doubao.svg",
+    "reasoning": true,
+    "reasoningEffort": "medium",
+    "active": false
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "GPT",
+    "provider": "OpenAI",
+    "slug": "gpt",
+    "icon": "assets/models/gpt.svg",
+    "sourceIcon": "openai.svg",
+    "variant": "monochrome"
+  },
+  {
+    "name": "Claude",
+    "provider": "Anthropic",
+    "slug": "claude",
+    "icon": "assets/models/claude.svg",
+    "sourceIcon": "claude-color.svg",
+    "variant": "color"
+  },
+  {
+    "name": "Gemini",
+    "provider": "Google",
+    "slug": "gemini",
+    "icon": "assets/models/gemini.svg",
+    "sourceIcon": "gemini-color.svg",
+    "variant": "color"
+  },
+  {
+    "name": "Grok",
+    "provider": "xAI",
+    "slug": "grok",
+    "icon": "assets/models/grok.svg",
+    "sourceIcon": "grok.svg",
+    "variant": "monochrome"
+  },
+  {
+    "name": "Kimi",
+    "provider": "Moonshot AI",
+    "slug": "kimi",
+    "icon": "assets/models/kimi.svg",
+    "sourceIcon": "kimi-color.svg",
+    "variant": "color"
+  },
+  {
+    "name": "DeepSeek",
+    "provider": "DeepSeek",
+    "slug": "deepseek",
+    "icon": "assets/models/deepseek.svg",
+    "sourceIcon": "deepseek-color.svg",
+    "variant": "color"
+  },
+  {
+    "name": "GLM",
+    "provider": "Zhipu AI",
+    "slug": "glm",
+    "icon": "assets/models/glm.svg",
+    "sourceIcon": "zhipu-color.svg",
+    "variant": "color"
+  },
+  {
+    "name": "Qianwen",
+    "provider": "Alibaba Cloud",
+    "slug": "qianwen",
+    "icon": "assets/models/qianwen.svg",
+    "sourceIcon": "qwen-color.svg",
+    "variant": "color"
+  },
+  {
+    "name": "Doubao",
+    "provider": "ByteDance",
+    "slug": "doubao",
+    "icon": "assets/models/doubao.svg",
+    "sourceIcon": "doubao-color.svg",
+    "variant": "color"
+  }
+]

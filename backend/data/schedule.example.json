@@ -1,0 +1,32 @@
+{
+  "tournament": {
+    "slug": "world-cup-2026",
+    "name": "FIFA World Cup",
+    "edition": "2026",
+    "hostCountries": ["US", "CA", "MX"],
+    "startsAt": "2026-06-11",
+    "endsAt": "2026-07-19",
+    "teamCount": 48,
+    "matchCount": 104,
+    "status": "upcoming"
+  },
+  "matches": [
+    {
+      "externalId": "example-match-1",
+      "matchNumber": 1,
+      "stageCode": "GROUP",
+      "stageName": "Group Stage",
+      "stageType": "group",
+      "stageSequence": 1,
+      "groupCode": "A",
+      "groupName": "Group A",
+      "homeTeamCode": "USA",
+      "awayTeamCode": "MEX",
+      "venueName": "Example Stadium",
+      "hostCity": "Example City",
+      "scheduledAt": "2026-06-11T19:00:00.000Z",
+      "status": "scheduled",
+      "sourceUpdatedAt": "2026-06-01T00:00:00.000Z"
+    }
+  ]
+}

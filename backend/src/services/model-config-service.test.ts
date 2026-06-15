@@ -2,13 +2,13 @@ import { describe, expect, it } from "vitest";
 import { buildModelGatewayConfig } from "./model-config-service.js";
 
 describe("buildModelGatewayConfig", () => {
-  it("pins the compatible Qianwen provider", () => {
+  it("pins Qwen 3.7 Max to the compatible Alibaba provider", () => {
     expect(
-      buildModelGatewayConfig("qianwen", "qwen/qwen3-235b-a22b-2507")
+      buildModelGatewayConfig("qianwen", "qwen/qwen3.7-max")
     ).toEqual({
       provider: {
         require_parameters: true,
-        order: ["DeepInfra"],
+        order: ["Alibaba"],
         allow_fallbacks: false
       }
     });

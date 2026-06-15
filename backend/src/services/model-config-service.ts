@@ -55,7 +55,7 @@ export async function configureModel(options: {
       `INSERT INTO model_configs
         (ai_model_id, tournament_id, version, temperature, top_p,
          max_output_tokens, seed, config, is_active, published_at)
-       VALUES (?, ?, ?, 0.2, 1, 2000, 20260611, ?, 1, UTC_TIMESTAMP(3))`,
+       VALUES (?, ?, ?, 0.2, 1, 800, 20260611, ?, 1, UTC_TIMESTAMP(3))`,
       [
         modelId,
         tournamentId,
@@ -74,12 +74,12 @@ export function buildModelGatewayConfig(
 ): Record<string, unknown> {
   if (
     slug === "qianwen" &&
-    modelKey === "qwen/qwen3-235b-a22b-2507"
+    modelKey === "qwen/qwen3.7-max"
   ) {
     return {
       provider: {
         require_parameters: true,
-        order: ["DeepInfra"],
+        order: ["Alibaba"],
         allow_fallbacks: false
       }
     };

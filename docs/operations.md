@@ -175,8 +175,8 @@ OPENROUTER_NOT_CONFIGURED
 
 当前已确认的模型兼容配置：
 
-- Qianwen 使用 `qwen/qwen3-235b-a22b-2507`，固定到明确支持严格结构化输出的
-  `DeepInfra` 端点。
+- Qianwen 使用 `qwen/qwen3.7-max`，固定到明确支持严格结构化输出的
+  `Alibaba` 端点。
 - Doubao 使用 `bytedance-seed/seed-2.0-mini`，请求中省略供应商不支持的 `seed`，
   并关闭额外 reasoning 以控制费用。
 

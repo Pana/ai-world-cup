@@ -62,12 +62,29 @@ export async function createMatchPrediction(
     }
   };
 
-  if (request.temperature !== null) body.temperature = request.temperature;
-  if (request.topP !== null) body.top_p = request.topP;
-  if (request.maxOutputTokens !== null) {
+  const disabledParameters = new Set(
+    stringArray(request.extraConfig.disabledParameters)
+  );
+  if (
+    request.temperature !== null &&
+    !disabledParameters.has("temperature")
+  ) {
+    body.temperature = request.temperature;
+  }
+  if (request.topP !== null && !disabledParameters.has("top_p")) {
+    body.top_p = request.topP;
+  }
+  if (
+    request.maxOutputTokens !== null &&
+    !disabledParameters.has("max_tokens")
+  ) {
     body.max_tokens = request.maxOutputTokens;
   }
-  if (request.seed !== null) body.seed = request.seed;
+  if (request.seed !== null && !disabledParameters.has("seed")) {
+    body.seed = request.seed;
+  }
+  const reasoning = asObject(request.extraConfig.reasoning);
+  if (reasoning) body.reasoning = reasoning;
 
   const startedAt = performance.now();
   const response = await fetch(`${config.OPENROUTER_BASE_URL}/chat/completions`, {
@@ -114,9 +131,21 @@ export async function createMatchPrediction(
     );
   }
 
-  const output = matchPredictionSchema.parse(
-    normalizePredictionProbabilities(parsed)
-  );
+  const normalized = normalizePredictionProbabilities(parsed);
+  const validated = matchPredictionSchema.safeParse(normalized);
+  if (!validated.success) {
+    throw new AppError(
+      "OpenRouter response did not match the prediction schema",
+      502,
+      "INVALID_MODEL_SCHEMA",
+      {
+        raw,
+        parsed,
+        issues: validated.error.issues
+      }
+    );
+  }
+  const output = validated.data;
   const usage = asObject(raw.usage);
 
   return {
@@ -139,4 +168,10 @@ function asObject(value: unknown): Record<string, unknown> | null {
 
 function numberOrNull(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function stringArray(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string")
+    : [];
 }

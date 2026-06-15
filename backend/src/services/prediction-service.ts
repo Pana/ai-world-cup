@@ -5,7 +5,7 @@ import {
   validateKnockoutPrediction
 } from "../domain/prediction.js";
 import { createMatchPrediction } from "../integrations/openrouter-client.js";
-import { errorMessage } from "../lib/errors.js";
+import { AppError, errorMessage } from "../lib/errors.js";
 import { hashJson } from "../lib/hash.js";
 import { toMysqlDateTime } from "../lib/time.js";
 
@@ -409,14 +409,20 @@ async function runOnePrediction(
     });
     return "succeeded";
   } catch (error) {
+    const rawResponse =
+      error instanceof AppError && error.details !== undefined
+        ? JSON.stringify(error.details)
+        : null;
     await execute(
       `UPDATE prediction_runs
        SET status = 'failed', error_code = ?, error_message = ?,
+           raw_response = ?,
            finished_at = UTC_TIMESTAMP(3)
        WHERE id = ?`,
       [
         error instanceof Error ? error.name : "UNKNOWN_ERROR",
         errorMessage(error).slice(0, 65_535),
+        rawResponse,
         run.insertId
       ]
     );

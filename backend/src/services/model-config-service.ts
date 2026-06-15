@@ -60,10 +60,38 @@ export async function configureModel(options: {
         modelId,
         tournamentId,
         configVersion,
-        JSON.stringify({ provider: { require_parameters: true } })
+        JSON.stringify(buildModelGatewayConfig(options.slug, options.modelKey))
       ]
     );
   });
 
   return { modelId, configVersion };
+}
+
+export function buildModelGatewayConfig(
+  slug: string,
+  modelKey: string
+): Record<string, unknown> {
+  if (
+    slug === "qianwen" &&
+    modelKey === "qwen/qwen3-235b-a22b-2507"
+  ) {
+    return {
+      provider: {
+        require_parameters: true,
+        order: ["DeepInfra"],
+        allow_fallbacks: false
+      }
+    };
+  }
+
+  if (slug === "doubao") {
+    return {
+      provider: { require_parameters: true },
+      disabledParameters: ["seed"],
+      reasoning: { effort: "none", exclude: true }
+    };
+  }
+
+  return { provider: { require_parameters: true } };
 }

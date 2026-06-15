@@ -173,6 +173,13 @@ OPENROUTER_NOT_CONFIGURED
 
 处理：查看 `prediction_runs.error_message`，更换支持 `structured_outputs` 的准确模型 ID。
 
+当前已确认的模型兼容配置：
+
+- Qianwen 使用 `qwen/qwen3-235b-a22b-2507`，固定到明确支持严格结构化输出的
+  `DeepInfra` 端点。
+- Doubao 使用 `bytedance-seed/seed-2.0-mini`，请求中省略供应商不支持的 `seed`，
+  并关闭额外 reasoning 以控制费用。
+
 ### 概率不严格合计 100
 
 系统会将合法的非负概率按比例归一化。缺失概率、负数或总和为零仍会被拒绝。

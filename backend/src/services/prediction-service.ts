@@ -4,7 +4,10 @@ import {
   derivePredictedResult,
   validateKnockoutPrediction
 } from "../domain/prediction.js";
-import { createMatchPrediction } from "../integrations/openrouter-client.js";
+import {
+  createMatchPrediction,
+  extractOpenRouterUsage
+} from "../integrations/openrouter-client.js";
 import { AppError, errorMessage } from "../lib/errors.js";
 import { hashJson } from "../lib/hash.js";
 import { toMysqlDateTime } from "../lib/time.js";
@@ -54,6 +57,8 @@ interface ModelConfigRow extends RowDataPacket {
   max_output_tokens: number | null;
   seed: number | null;
   config: string | object | null;
+  is_reasoning_enabled: number;
+  reasoning_effort: string | null;
 }
 
 export interface PredictionRunSummary {
@@ -228,7 +233,8 @@ async function loadActiveModelConfigs(
   const rows = await queryRows<ModelConfigRow[]>(
     `SELECT
        mc.id AS config_id, am.id AS ai_model_id, am.model_key,
-       mc.temperature, mc.top_p, mc.max_output_tokens, mc.seed, mc.config
+       mc.temperature, mc.top_p, mc.max_output_tokens, mc.seed, mc.config,
+       am.is_reasoning_enabled, am.reasoning_effort
      FROM model_configs mc
      JOIN ai_models am ON am.id = mc.ai_model_id
      WHERE mc.tournament_id = ?
@@ -283,12 +289,15 @@ async function runOnePrediction(
   const attempt = Number(priorRuns[0]?.attempts ?? 0) + 1;
   const idempotencyKey =
     `match:${match.id}:model-config:${model.config_id}:prompt:${prompt.id}:attempt:${attempt}`;
+  const extraConfig = asObject(model.config);
+  const reasoningConfig = resolveReasoningConfig(model, extraConfig);
   const requestPayload = {
     model: model.model_key,
     temperature: model.temperature,
     top_p: model.top_p,
     max_tokens: model.max_output_tokens,
     seed: model.seed,
+    reasoning: reasoningConfig,
     prompt_version: prompt.version_key,
     data_snapshot_hash: assignment.data_snapshot_hash
   };
@@ -300,8 +309,8 @@ async function runOnePrediction(
       (model_config_id, prompt_version_id, match_prompt_version_id, match_id,
        prediction_type, idempotency_key, requested_model_key,
        rendered_system_prompt, rendered_user_prompt, data_snapshot_hash,
-       request_payload, status, attempt_number, started_at)
-     VALUES (?, ?, ?, ?, 'match', ?, ?, ?, ?, ?, ?, 'running', ?, UTC_TIMESTAMP(3))`,
+       request_payload, reasoning_config, status, attempt_number, started_at)
+     VALUES (?, ?, ?, ?, 'match', ?, ?, ?, ?, ?, ?, ?, 'running', ?, UTC_TIMESTAMP(3))`,
     [
       model.config_id,
       prompt.id,
@@ -313,6 +322,7 @@ async function runOnePrediction(
       renderedUserPrompt,
       assignment.data_snapshot_hash,
       JSON.stringify(requestPayload),
+      JSON.stringify(reasoningConfig),
       attempt
       ]
     );
@@ -330,7 +340,10 @@ async function runOnePrediction(
       topP: model.top_p,
       maxOutputTokens: model.max_output_tokens,
       seed: model.seed,
-      extraConfig: asObject(model.config),
+      extraConfig: {
+        ...extraConfig,
+        reasoning: reasoningConfig
+      },
       jsonSchema: asObject(
         typeof prompt.output_json_schema === "string"
           ? JSON.parse(prompt.output_json_schema)
@@ -392,6 +405,7 @@ async function runOnePrediction(
         `UPDATE prediction_runs
          SET gateway_request_id = ?, resolved_model_key = ?, raw_response = ?,
              status = 'succeeded', input_tokens = ?, output_tokens = ?,
+             reasoning_tokens = ?, total_tokens = ?,
              cost_amount = ?, cost_currency = 'USD', latency_ms = ?,
              finished_at = UTC_TIMESTAMP(3)
          WHERE id = ?`,
@@ -401,6 +415,8 @@ async function runOnePrediction(
           JSON.stringify(response.raw),
           response.inputTokens,
           response.outputTokens,
+          response.reasoningTokens,
+          response.totalTokens,
           response.cost,
           response.latencyMs,
           run.insertId
@@ -409,25 +425,53 @@ async function runOnePrediction(
     });
     return "succeeded";
   } catch (error) {
-    const rawResponse =
+    const errorDetails =
       error instanceof AppError && error.details !== undefined
-        ? JSON.stringify(error.details)
+        ? error.details
         : null;
+    const usage = extractOpenRouterUsage(errorDetails);
+    const rawResponse =
+      errorDetails === null ? null : JSON.stringify(errorDetails);
     await execute(
       `UPDATE prediction_runs
        SET status = 'failed', error_code = ?, error_message = ?,
-           raw_response = ?,
+           raw_response = ?, input_tokens = ?, output_tokens = ?,
+           reasoning_tokens = ?, total_tokens = ?,
+           cost_amount = ?, cost_currency = IF(? IS NULL, NULL, 'USD'),
            finished_at = UTC_TIMESTAMP(3)
        WHERE id = ?`,
       [
         error instanceof Error ? error.name : "UNKNOWN_ERROR",
         errorMessage(error).slice(0, 65_535),
         rawResponse,
+        usage.inputTokens,
+        usage.outputTokens,
+        usage.reasoningTokens,
+        usage.totalTokens,
+        usage.cost,
+        usage.cost,
         run.insertId
       ]
     );
     return "failed";
   }
+}
+
+export function resolveReasoningConfig(
+  model: Pick<ModelConfigRow, "is_reasoning_enabled" | "reasoning_effort">,
+  extraConfig: Record<string, unknown>
+): Record<string, unknown> {
+  const configured = asObject(extraConfig.reasoning);
+  if (Object.keys(configured).length > 0) return configured;
+
+  if (!model.is_reasoning_enabled) {
+    return { effort: "none", exclude: true };
+  }
+
+  return {
+    effort: model.reasoning_effort ?? "medium",
+    exclude: true
+  };
 }
 
 function asObject(value: unknown): Record<string, unknown> {

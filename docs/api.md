@@ -128,8 +128,8 @@ GET /api/v1/tournaments/world-cup-2026/matches?status=scheduled&limit=20
 
 ### `GET /api/v1/models/:slug`
 
-返回模型资料和预测历史。历史记录包括比赛、预测比分、实际比分、积分和 Prompt
-版本。
+返回模型资料和预测历史。历史记录包括比赛、预测比分、实际比分、积分、Prompt
+版本、推理配置、输入/输出/推理/总 Token 和调用费用。
 
 ## 用户
 

@@ -126,7 +126,8 @@ RESULT_SYNC_CRON=*/10 * * * *
 
 1. 首次只启用一个低价模型。
 2. 只对一场测试比赛执行 `--match-id`。
-3. 查看 `prediction_runs.input_tokens`、`output_tokens` 和 `cost_amount`。
+3. 查看 `prediction_runs.reasoning_config`、`input_tokens`、`output_tokens`、
+   `reasoning_tokens`、`total_tokens` 和 `cost_amount`。
 4. 确认成功后再增加模型。
 5. 在 OpenRouter 控制台设置预算和告警。
 
@@ -135,9 +136,13 @@ RESULT_SYNC_CRON=*/10 * * * *
 ```text
 temperature: 0.2
 top_p: 1
-max_output_tokens: 2000
+max_output_tokens: 800
 seed: 20260611
+reasoning: 根据模型的 reasoningEnabled/reasoningEffort 发送
 ```
+
+每次调用都会固化实际推理配置，并记录 OpenRouter 返回的输入、输出、推理和总 Token
+以及总费用。`reasoning_tokens` 是否有值取决于具体供应商是否返回该明细。
 
 单次失败不会写入 `predictions`，但供应商可能已经产生调用费用。不要无上限自动重试。
 
@@ -178,7 +183,7 @@ OPENROUTER_NOT_CONFIGURED
 - Qianwen 使用 `qwen/qwen3.7-max`，固定到明确支持严格结构化输出的
   `Alibaba` 端点。
 - Doubao 使用 `bytedance-seed/seed-2.0-mini`，请求中省略供应商不支持的 `seed`，
-  并关闭额外 reasoning 以控制费用。
+  并开启中等强度 reasoning。
 
 ### 概率不严格合计 100
 

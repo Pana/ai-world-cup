@@ -89,7 +89,7 @@ export function buildModelGatewayConfig(
     return {
       provider: { require_parameters: true },
       disabledParameters: ["seed"],
-      reasoning: { effort: "none", exclude: true }
+      reasoning: { effort: "medium", exclude: true }
     };
   }
 

@@ -25,8 +25,18 @@ export interface OpenRouterResult {
   raw: unknown;
   inputTokens: number | null;
   outputTokens: number | null;
+  reasoningTokens: number | null;
+  totalTokens: number | null;
   cost: number | null;
   latencyMs: number;
+}
+
+export interface OpenRouterUsage {
+  inputTokens: number | null;
+  outputTokens: number | null;
+  reasoningTokens: number | null;
+  totalTokens: number | null;
+  cost: number | null;
 }
 
 export async function createMatchPrediction(
@@ -115,7 +125,7 @@ export async function createMatchPrediction(
       "OpenRouter response did not contain string content",
       502,
       "INVALID_OPENROUTER_RESPONSE",
-      raw
+      { raw }
     );
   }
 
@@ -127,7 +137,7 @@ export async function createMatchPrediction(
       "OpenRouter response was not valid JSON",
       502,
       "INVALID_MODEL_JSON",
-      { content }
+      { raw, content }
     );
   }
 
@@ -146,17 +156,31 @@ export async function createMatchPrediction(
     );
   }
   const output = validated.data;
-  const usage = asObject(raw.usage);
+  const usage = extractOpenRouterUsage(raw);
 
   return {
     id: typeof raw.id === "string" ? raw.id : null,
     model: typeof raw.model === "string" ? raw.model : null,
     output,
     raw,
+    ...usage,
+    latencyMs
+  };
+}
+
+export function extractOpenRouterUsage(value: unknown): OpenRouterUsage {
+  const root = asObject(value);
+  const nestedRaw = asObject(root?.raw);
+  const raw = nestedRaw ?? root;
+  const usage = asObject(raw?.usage);
+  const completionTokenDetails = asObject(usage?.completion_tokens_details);
+
+  return {
     inputTokens: numberOrNull(usage?.prompt_tokens),
     outputTokens: numberOrNull(usage?.completion_tokens),
-    cost: numberOrNull(usage?.cost),
-    latencyMs
+    reasoningTokens: numberOrNull(completionTokenDetails?.reasoning_tokens),
+    totalTokens: numberOrNull(usage?.total_tokens),
+    cost: numberOrNull(usage?.cost)
   };
 }
 

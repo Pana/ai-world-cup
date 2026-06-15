@@ -327,11 +327,14 @@ COLLATE=utf8mb4_0900_ai_ci
 | rendered_user_prompt | longtext | 本次调用实际发送的完整 User Prompt |
 | data_snapshot_hash | char(64) | 本次使用的数据快照 SHA-256 |
 | request_payload | json | 实际发送的请求 |
+| reasoning_config | json | 本次实际使用的推理配置，可空 |
 | raw_response | json | 模型原始响应，可空 |
 | status | varchar(20) | `pending/running/succeeded/failed` |
 | attempt_number | smallint | 第几次尝试 |
 | input_tokens | int | 输入 Token 数，可空 |
 | output_tokens | int | 输出 Token 数，可空 |
+| reasoning_tokens | int | 输出 Token 中的推理 Token 数，可空 |
+| total_tokens | int | 输入与输出 Token 总数，可空 |
 | cost_amount | decimal(12,6) | 调用成本，可空 |
 | cost_currency | char(3) | 如 `USD` |
 | latency_ms | int | 响应耗时，可空 |

@@ -201,7 +201,14 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
          p.predicted_away_score AS predictedAwayScore,
          m.home_score_90 AS actualHomeScore, m.away_score_90 AS actualAwayScore,
          COALESCE(SUM(ps.points), 0) AS points,
-         pv.version_key AS promptVersion
+         pv.version_key AS promptVersion,
+         pr.reasoning_config AS reasoningConfig,
+         pr.input_tokens AS inputTokens,
+         pr.output_tokens AS outputTokens,
+         pr.reasoning_tokens AS reasoningTokens,
+         pr.total_tokens AS totalTokens,
+         pr.cost_amount AS costAmount,
+         pr.cost_currency AS costCurrency
        FROM predictions p
        JOIN ai_models am ON am.id = p.ai_model_id
        JOIN matches m ON m.id = p.match_id

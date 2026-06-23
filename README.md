@@ -171,7 +171,7 @@ OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
 OPENROUTER_APP_URL=http://localhost:3001
 OPENROUTER_APP_NAME=AI World Cup Oracle
 
-SCHEDULE_SOURCE=./data/schedule.example.json
+SCHEDULE_SOURCE=./data/schedule.fifa-2026.json
 PREDICTION_LEAD_HOURS=24
 PREDICTION_SCAN_CRON=*/15 * * * *
 RESULT_SYNC_CRON=*/10 * * * *
@@ -222,7 +222,9 @@ doubao
 
 ## 赛程导入
 
-默认赛程契约示例见
+默认赛程快照见
+[`backend/data/schedule.fifa-2026.json`](backend/data/schedule.fifa-2026.json)。
+赛程契约格式示例见
 [`backend/data/schedule.example.json`](backend/data/schedule.example.json)。
 
 ```bash
@@ -232,7 +234,7 @@ cd backend
 npm run schedule:import
 
 # 指定本地文件
-npm run schedule:import -- --source ./data/schedule.example.json
+npm run schedule:import -- --source ./data/schedule.fifa-2026.json
 
 # 指定 HTTP JSON 数据源
 npm run schedule:import -- --source https://example.com/world-cup.json

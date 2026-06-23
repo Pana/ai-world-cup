@@ -11,7 +11,7 @@ const envSchema = z.object({
   OPENROUTER_BASE_URL: z.url().default("https://openrouter.ai/api/v1"),
   OPENROUTER_APP_URL: z.string().default("http://localhost:3000"),
   OPENROUTER_APP_NAME: z.string().default("AI World Cup Oracle"),
-  SCHEDULE_SOURCE: z.string().default("./data/schedule.example.json"),
+  SCHEDULE_SOURCE: z.string().default("./data/schedule.fifa-2026.json"),
   PREDICTION_LEAD_HOURS: z.coerce.number().positive().default(24),
   PREDICTION_SCAN_CRON: z.string().default("*/15 * * * *"),
   RESULT_SYNC_CRON: z.string().default("*/10 * * * *"),

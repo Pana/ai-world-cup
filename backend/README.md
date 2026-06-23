@@ -95,7 +95,7 @@ Default URL: `http://localhost:3010`
 npm run schedule:import
 
 # Import from another local file or HTTP JSON endpoint
-npm run schedule:import -- --source ./data/schedule.example.json
+npm run schedule:import -- --source ./data/schedule.fifa-2026.json
 
 # Run all matches inside the configured prediction window
 npm run predictions:run
@@ -131,7 +131,10 @@ Both schedules use `TIME_ZONE`. Production should keep it at `UTC`.
 - A local JSON file.
 - An HTTP or HTTPS endpoint returning the same JSON shape.
 
-See [data/schedule.example.json](data/schedule.example.json). The source adapter
+See [data/schedule.fifa-2026.json](data/schedule.fifa-2026.json) for the
+current local schedule snapshot and
+[data/schedule.example.json](data/schedule.example.json) for the compact
+contract example. The source adapter
 upserts tournaments, stages, groups, fixtures, official scores, extra-time data,
 penalty scores, and winning teams.
 

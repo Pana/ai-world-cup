@@ -137,6 +137,7 @@ async function upsertMatch(
          started_at, finished_at, source_updated_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON DUPLICATE KEY UPDATE
+         external_id = VALUES(external_id),
          stage_id = VALUES(stage_id),
          group_id = VALUES(group_id),
          home_team_id = VALUES(home_team_id),

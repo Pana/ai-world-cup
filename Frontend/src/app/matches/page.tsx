@@ -6,18 +6,29 @@ import { MatchCard } from "@/components/MatchCard";
 import { PageHeader } from "@/components/PageHeader";
 import { EmptyState, ErrorState, Loading } from "@/components/States";
 
-const statuses = ["all", "scheduled", "live", "finished"] as const;
+const statuses = ["all", "upcoming", "scheduled", "live", "finished"] as const;
+
+const statusLabels: Record<(typeof statuses)[number], string> = {
+  all: "All",
+  upcoming: "Upcoming",
+  scheduled: "Scheduled",
+  live: "Live",
+  finished: "Finished"
+};
 
 export default function MatchesPage() {
   const [status, setStatus] = useState<(typeof statuses)[number]>("all");
   const [stage, setStage] = useState("all");
   const matches = useMatches({
-    status: status === "all" ? undefined : status,
+    status: status === "all" || status === "upcoming" ? undefined : status,
     stage: stage === "all" ? undefined : stage,
     limit: 104
   });
   const stages = useStages();
-  const matchRows = matches.data;
+  const matchRows = useMemo(() => {
+    if (status !== "upcoming") return matches.data;
+    return matches.data?.filter((match) => match.status !== "finished");
+  }, [matches.data, status]);
   const grouped = useMemo(() => {
     const map = new Map<string, NonNullable<typeof matchRows>>();
     for (const match of matchRows ?? []) {
@@ -34,8 +45,8 @@ export default function MatchesPage() {
         <div className="flex border border-white/10 bg-white/5 p-1">
           {statuses.map((item) => (
             <button key={item} onClick={() => setStatus(item)}
-              className={`px-3 py-1.5 text-xs capitalize ${status === item ? "bg-electric font-bold text-night" : "text-slate-400"}`}>
-              {item}
+              className={`px-3 py-1.5 text-xs ${status === item ? "bg-electric font-bold text-night" : "text-slate-400"}`}>
+              {statusLabels[item]}
             </button>
           ))}
         </div>
@@ -47,7 +58,7 @@ export default function MatchesPage() {
       </div>
       {matches.isLoading && <Loading />}
       {matches.error && <ErrorState message="Could not load fixtures." />}
-      {matches.data && grouped.length === 0 && <EmptyState message="No matches in this view." />}
+      {matchRows && grouped.length === 0 && <EmptyState message="No matches in this view." />}
       <div className="space-y-8">
         {grouped.map(([name, rows]) => (
           <section key={name}>

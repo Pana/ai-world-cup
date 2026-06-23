@@ -6,7 +6,7 @@ import { MatchCard } from "@/components/MatchCard";
 import { PageHeader } from "@/components/PageHeader";
 import { EmptyState, ErrorState, Loading } from "@/components/States";
 
-const statuses = ["all", "upcoming", "scheduled", "live", "finished"] as const;
+const statuses = ["upcoming", "all", "scheduled", "live", "finished"] as const;
 
 const statusLabels: Record<(typeof statuses)[number], string> = {
   all: "All",
@@ -17,7 +17,7 @@ const statusLabels: Record<(typeof statuses)[number], string> = {
 };
 
 export default function MatchesPage() {
-  const [status, setStatus] = useState<(typeof statuses)[number]>("all");
+  const [status, setStatus] = useState<(typeof statuses)[number]>("upcoming");
   const [stage, setStage] = useState("all");
   const matches = useMatches({
     status: status === "all" || status === "upcoming" ? undefined : status,

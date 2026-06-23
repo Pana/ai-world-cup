@@ -6,12 +6,11 @@ import { MatchCard } from "@/components/MatchCard";
 import { PageHeader } from "@/components/PageHeader";
 import { EmptyState, ErrorState, Loading } from "@/components/States";
 
-const statuses = ["upcoming", "scheduled", "live", "finished", "all"] as const;
+const statuses = ["upcoming", "live", "finished", "all"] as const;
 
 const statusLabels: Record<(typeof statuses)[number], string> = {
   all: "All",
   upcoming: "Upcoming",
-  scheduled: "Scheduled",
   live: "Live",
   finished: "Finished"
 };

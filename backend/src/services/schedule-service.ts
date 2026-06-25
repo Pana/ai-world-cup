@@ -23,6 +23,7 @@ export async function importSchedule(source: string): Promise<{
   for (const match of document.matches) {
     await upsertMatch(tournamentId, match, teamIds);
   }
+  await refreshStageStatuses(tournamentId);
 
   return { tournamentId, importedMatches: document.matches.length };
 }
@@ -197,4 +198,28 @@ function resolveTeamId(
   const id = teamIds.get(code);
   if (!id) throw new Error(`Unknown team code: ${code}. Run db:seed first.`);
   return id;
+}
+
+async function refreshStageStatuses(tournamentId: number): Promise<void> {
+  await execute(
+    `UPDATE stages s
+     JOIN (
+       SELECT
+         stage_id,
+         COUNT(*) AS total_matches,
+         SUM(status = 'finished') AS finished_matches,
+         SUM(status = 'live') AS live_matches
+       FROM matches
+       WHERE tournament_id = ?
+       GROUP BY stage_id
+     ) summary ON summary.stage_id = s.id
+     SET s.status =
+       CASE
+         WHEN summary.finished_matches = summary.total_matches THEN 'completed'
+         WHEN summary.finished_matches > 0 OR summary.live_matches > 0 THEN 'active'
+         ELSE 'upcoming'
+       END
+     WHERE s.tournament_id = ?`,
+    [tournamentId, tournamentId]
+  );
 }

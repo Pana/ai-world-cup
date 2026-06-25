@@ -102,7 +102,11 @@ async function findDueMatches(options: {
   let where: string;
 
   if (options.matchId) {
-    where = "m.id = ?";
+    where = `
+      m.id = ?
+      AND m.status = 'scheduled'
+      AND m.scheduled_at > UTC_TIMESTAMP(3)
+    `;
     values.push(options.matchId);
   } else {
     where = `

@@ -97,6 +97,9 @@ npm run schedule:import
 # Import from another local file or HTTP JSON endpoint
 npm run schedule:import -- --source ./data/schedule.fifa-2026.json
 
+# Import from the built-in FIFA API adapter
+npm run schedule:import -- --source fifa://world-cup-2026
+
 # Run all matches inside the configured prediction window
 npm run predictions:run
 
@@ -128,18 +131,17 @@ Both schedules use `TIME_ZONE`. Production should keep it at `UTC`.
 
 `SCHEDULE_SOURCE` can be:
 
+- `fifa://world-cup-2026`, which fetches FIFA's official calendar API and
+  transforms it into the internal schedule contract.
 - A local JSON file.
 - An HTTP or HTTPS endpoint returning the same JSON shape.
 
 See [data/schedule.fifa-2026.json](data/schedule.fifa-2026.json) for the
-current local schedule snapshot and
+offline schedule snapshot and
 [data/schedule.example.json](data/schedule.example.json) for the compact
 contract example. The source adapter
 upserts tournaments, stages, groups, fixtures, official scores, extra-time data,
 penalty scores, and winning teams.
-
-A real FIFA or commercial data provider should be implemented as a small adapter
-that transforms its response into this contract.
 
 ## Prompt Versioning
 

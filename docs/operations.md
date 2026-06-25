@@ -116,6 +116,10 @@ RESULT_SYNC_CRON=*/10 * * * *
 
 `PREDICTION_LEAD_HOURS=24` 表示在开球前 24 小时内允许自动生成预测。
 
+默认 `SCHEDULE_SOURCE=fifa://world-cup-2026`，因此 `RESULT_SYNC_CRON` 会直接抓取
+FIFA 官方 API 并把最新赛程/比分写入数据库，然后重新计算已完赛比赛得分。也可以把
+`SCHEDULE_SOURCE` 临时切回 `./data/schedule.fifa-2026.json` 使用离线快照。
+
 注意：
 
 - 多实例会重复触发定时任务。

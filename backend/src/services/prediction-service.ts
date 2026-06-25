@@ -73,6 +73,7 @@ export async function runDuePredictions(options: {
   leadHours: number;
   matchId?: number;
 }): Promise<PredictionRunSummary> {
+  await failStaleRunningPredictionRuns();
   const matches = await findDueMatches(options);
   const summary: PredictionRunSummary = {
     matches: matches.length,
@@ -132,6 +133,18 @@ async function findDueMatches(options: {
      WHERE ${where}
      ORDER BY m.scheduled_at, m.match_number`,
     values
+  );
+}
+
+async function failStaleRunningPredictionRuns(): Promise<void> {
+  await execute(
+    `UPDATE prediction_runs
+     SET status = 'failed',
+         error_code = 'STALE_RUNNING_RUN',
+         error_message = 'Prediction run was left running for more than 120 minutes and was marked failed before a new scan.',
+         finished_at = UTC_TIMESTAMP(3)
+     WHERE status = 'running'
+       AND started_at < DATE_SUB(UTC_TIMESTAMP(3), INTERVAL 120 MINUTE)`
   );
 }
 

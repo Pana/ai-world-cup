@@ -10,7 +10,7 @@ import { ArrowRight, Radio } from "lucide-react";
 
 export default function Home() {
   const { data, error, isLoading } = useLeaderboard();
-  const matches = useMatches({ limit: 4 });
+  const matches = useMatches({ status: "scheduled", limit: 4 });
   return (
     <div>
       <header className="mb-8 flex items-center gap-6">

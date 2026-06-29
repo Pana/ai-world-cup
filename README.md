@@ -205,6 +205,29 @@ npm run models:configure -- \
   --version deepseek-v4-pro
 ```
 
+例如启用 GLM 5.2：
+
+```bash
+npm run models:configure -- \
+  --slug glm \
+  --model-key z-ai/glm-5.2 \
+  --version "GLM 5.2"
+```
+
+当前推荐的“最新/最强”参赛模型：
+
+| slug | OpenRouter model id | version |
+| --- | --- | --- |
+| gpt | `openai/gpt-5.5-pro` | `GPT-5.5 Pro` |
+| claude | `anthropic/claude-opus-4.8` | `Claude Opus 4.8` |
+| gemini | `google/gemini-3.1-pro-preview` | `Gemini 3.1 Pro Preview` |
+| grok | `x-ai/grok-4.20-multi-agent` | `Grok 4.20 Multi-Agent` |
+| kimi | `moonshotai/kimi-k2.7-code` | `Kimi K2.7 Code` |
+| deepseek | `deepseek/deepseek-v4-pro` | `DeepSeek V4 Pro` |
+| glm | `z-ai/glm-5.2` | `GLM 5.2` |
+| qianwen | `qwen/qwen3.7-max` | `Qwen 3.7 Max` |
+| doubao | `bytedance-seed/seed-1.6` | `Doubao Seed 1.6` |
+
 可用的内置模型 `slug`：
 
 ```text

@@ -3,99 +3,99 @@
     "name": "GPT",
     "provider": "OpenAI",
     "slug": "gpt",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "openai/gpt-5.5-pro",
+    "version": "GPT-5.5 Pro",
     "avatarUrl": "assets/models/gpt.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "Claude",
     "provider": "Anthropic",
     "slug": "claude",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "anthropic/claude-opus-4.8",
+    "version": "Claude Opus 4.8",
     "avatarUrl": "assets/models/claude.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "Gemini",
     "provider": "Google",
     "slug": "gemini",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "google/gemini-3.1-pro-preview",
+    "version": "Gemini 3.1 Pro Preview",
     "avatarUrl": "assets/models/gemini.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "Grok",
     "provider": "xAI",
     "slug": "grok",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "x-ai/grok-4.20-multi-agent",
+    "version": "Grok 4.20 Multi-Agent",
     "avatarUrl": "assets/models/grok.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "Kimi",
     "provider": "Moonshot AI",
     "slug": "kimi",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "moonshotai/kimi-k2.7-code",
+    "version": "Kimi K2.7 Code",
     "avatarUrl": "assets/models/kimi.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "DeepSeek",
     "provider": "DeepSeek",
     "slug": "deepseek",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "deepseek/deepseek-v4-pro",
+    "version": "DeepSeek V4 Pro",
     "avatarUrl": "assets/models/deepseek.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "GLM",
-    "provider": "Zhipu AI",
+    "provider": "Z.ai",
     "slug": "glm",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "z-ai/glm-5.2",
+    "version": "GLM 5.2",
     "avatarUrl": "assets/models/glm.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "Qianwen",
     "provider": "Alibaba Cloud",
     "slug": "qianwen",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "qwen/qwen3.7-max",
+    "version": "Qwen 3.7 Max",
     "avatarUrl": "assets/models/qianwen.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   },
   {
     "name": "Doubao",
     "provider": "ByteDance",
     "slug": "doubao",
-    "modelKey": "",
-    "version": "configure-me",
+    "modelKey": "bytedance-seed/seed-1.6",
+    "version": "Doubao Seed 1.6",
     "avatarUrl": "assets/models/doubao.svg",
     "reasoning": true,
     "reasoningEffort": "medium",
-    "active": false
+    "active": true
   }
 ]

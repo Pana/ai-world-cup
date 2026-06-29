@@ -10,6 +10,7 @@ import {
 } from "../domain/prediction.js";
 import { hashJson, sha256 } from "../lib/hash.js";
 import { toMysqlDateTime } from "../lib/time.js";
+import { buildModelGatewayConfig } from "./model-config-service.js";
 
 const modelCatalogSchema = z.array(
   z.object({
@@ -178,7 +179,7 @@ async function seedModels(tournamentId: number): Promise<number> {
         [
           modelId,
           tournamentId,
-          JSON.stringify({ provider: { require_parameters: true } })
+          JSON.stringify(buildModelGatewayConfig(model.slug, model.modelKey))
         ]
       );
     }

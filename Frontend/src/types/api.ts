@@ -40,6 +40,11 @@ export interface ModelHistoryRow {
   predictedAwayScore: number | null;
   actualHomeScore: number | null;
   actualAwayScore: number | null;
+  actualHomeScoreAfterExtraTime: number | null;
+  actualAwayScoreAfterExtraTime: number | null;
+  actualHomePenaltyScore: number | null;
+  actualAwayPenaltyScore: number | null;
+  resultType: string | null;
   points: Num;
   promptVersion: string | null;
 }

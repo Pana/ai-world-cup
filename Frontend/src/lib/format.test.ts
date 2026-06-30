@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { toNum, formatScore, formatPercent, formatKickoff } from "@/lib/format";
+import { toNum, formatScore, formatMatchResult, formatPercent, formatKickoff } from "@/lib/format";
 
 describe("toNum", () => {
   it("parses decimal strings and passes through numbers", () => {
@@ -18,6 +18,28 @@ describe("formatScore", () => {
   });
   it("shows dash when missing", () => {
     expect(formatScore(null, 1)).toBe("- : -");
+  });
+});
+
+describe("formatMatchResult", () => {
+  it("adds penalty shootout score when available", () => {
+    expect(formatMatchResult({
+      homeScore90: 1,
+      awayScore90: 1,
+      homePenaltyScore: 4,
+      awayPenaltyScore: 3,
+      resultType: "penalties"
+    })).toBe("1 : 1 (4 : 3 pens)");
+  });
+
+  it("adds after-extra-time score when available", () => {
+    expect(formatMatchResult({
+      homeScore90: 1,
+      awayScore90: 1,
+      homeScoreAfterExtraTime: 2,
+      awayScoreAfterExtraTime: 1,
+      resultType: "extra_time"
+    })).toBe("1 : 1 (AET 2 : 1)");
   });
 });
 

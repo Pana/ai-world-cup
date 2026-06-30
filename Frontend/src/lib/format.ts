@@ -17,6 +17,41 @@ export function formatScore(home: number | null | undefined, away: number | null
   return `${h} : ${a}`;
 }
 
+export function formatMatchResult(result: {
+  homeScore90?: number | null;
+  awayScore90?: number | null;
+  homeScoreAfterExtraTime?: number | null;
+  awayScoreAfterExtraTime?: number | null;
+  homePenaltyScore?: number | null;
+  awayPenaltyScore?: number | null;
+  resultType?: string | null;
+}): string {
+  const regularScore = formatScore(result.homeScore90, result.awayScore90);
+  if (regularScore === "- : -") return regularScore;
+
+  if (
+    result.resultType === "penalties" &&
+    result.homePenaltyScore !== null &&
+    result.homePenaltyScore !== undefined &&
+    result.awayPenaltyScore !== null &&
+    result.awayPenaltyScore !== undefined
+  ) {
+    return `${regularScore} (${result.homePenaltyScore} : ${result.awayPenaltyScore} pens)`;
+  }
+
+  if (
+    result.resultType === "extra_time" &&
+    result.homeScoreAfterExtraTime !== null &&
+    result.homeScoreAfterExtraTime !== undefined &&
+    result.awayScoreAfterExtraTime !== null &&
+    result.awayScoreAfterExtraTime !== undefined
+  ) {
+    return `${regularScore} (AET ${result.homeScoreAfterExtraTime} : ${result.awayScoreAfterExtraTime})`;
+  }
+
+  return regularScore;
+}
+
 export function formatPercent(v: Num | undefined): string {
   if (v === null || v === undefined || v === "") return "—";
   return `${Math.round(toNum(v) * 100)}%`;

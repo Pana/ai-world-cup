@@ -8,6 +8,9 @@ function row(matchNumber: number, scheduledAt: string, points: number): ModelHis
     homeTeam: "A", awayTeam: "B",
     predictedHomeScore: 1, predictedAwayScore: 0,
     actualHomeScore: null, actualAwayScore: null,
+    actualHomeScoreAfterExtraTime: null, actualAwayScoreAfterExtraTime: null,
+    actualHomePenaltyScore: null, actualAwayPenaltyScore: null,
+    resultType: null,
     points, promptVersion: "match-prediction-v1"
   };
 }

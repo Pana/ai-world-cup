@@ -4,7 +4,7 @@ import { useMatch } from "@/lib/api";
 import { TeamFlag } from "@/components/TeamFlag";
 import { PredictionCard } from "@/components/PredictionCard";
 import { Loading, ErrorState, EmptyState } from "@/components/States";
-import { formatKickoff } from "@/lib/format";
+import { formatKickoff, formatMatchResult } from "@/lib/format";
 import { UserPredictionForm } from "@/components/UserPredictionForm";
 
 export default function MatchDetail({ params }: { params: Promise<{ id: string }> }) {
@@ -32,8 +32,8 @@ export default function MatchDetail({ params }: { params: Promise<{ id: string }
             <TeamFlag name={m.homeTeamName} code={m.homeTeamCode} size={48} />
             <span className="max-w-32 text-center font-bold">{homeName}</span>
           </div>
-          <div className="text-3xl font-black">
-            {finished ? `${m.homeScore90 ?? "-"} : ${m.awayScore90 ?? "-"}` : "vs"}
+          <div className="max-w-52 text-3xl font-black leading-tight">
+            {finished ? formatMatchResult(m) : "vs"}
           </div>
           <div className="flex flex-col items-center gap-2">
             <TeamFlag name={m.awayTeamName} code={m.awayTeamCode} size={48} />
@@ -48,11 +48,8 @@ export default function MatchDetail({ params }: { params: Promise<{ id: string }
         <div className="mt-1 text-xs text-slate-500">
           Status: {m.status}{m.promptVersion ? ` · Prompt ${m.promptVersion}` : ""}
         </div>
-        {finished && m.resultType && (
-          <div className="mt-2 text-xs text-slate-400">
-            {m.resultType === "extra_time" && `After extra time: ${m.homeScoreAfterExtraTime}:${m.awayScoreAfterExtraTime}`}
-            {m.resultType === "penalties" && `Penalties: ${m.homePenaltyScore}:${m.awayPenaltyScore}`}
-          </div>
+        {finished && m.resultType && m.resultType !== "regular_time" && (
+          <div className="mt-2 text-xs text-slate-400">{m.resultType === "penalties" ? "Decided by penalties" : "Decided after extra time"}</div>
         )}
       </header>
 

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import type { MatchSummary } from "@/types/api";
 import { TeamFlag } from "@/components/TeamFlag";
-import { formatKickoff } from "@/lib/format";
+import { formatKickoff, formatMatchResult } from "@/lib/format";
 
 export function MatchCard({ m }: { m: MatchSummary }) {
   const finished = m.status === "finished";
@@ -16,8 +16,8 @@ export function MatchCard({ m }: { m: MatchSummary }) {
         <span className="truncate text-right text-xs sm:text-sm">{m.homeTeamName ?? m.homePlaceholder ?? "TBD"}</span>
         <TeamFlag name={m.homeTeamName} code={m.homeTeamCode} />
       </div>
-      <span className="px-2 text-sm font-bold">
-        {finished ? `${m.homeScore90 ?? "-"}:${m.awayScore90 ?? "-"}` : "vs"}
+      <span className="px-2 text-center text-sm font-bold leading-tight">
+        {finished ? formatMatchResult(m) : "vs"}
       </span>
       <div className="flex min-w-0 items-center gap-2">
         <TeamFlag name={m.awayTeamName} code={m.awayTeamCode} />

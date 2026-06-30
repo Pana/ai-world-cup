@@ -6,7 +6,7 @@ import { ModelAvatar } from "@/components/ModelAvatar";
 import { PointsCurve } from "@/components/PointsCurve";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { Loading, ErrorState, EmptyState } from "@/components/States";
-import { formatScore, formatKickoff, toNum } from "@/lib/format";
+import { formatScore, formatKickoff, formatMatchResult, toNum } from "@/lib/format";
 
 export default function ModelDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -74,7 +74,15 @@ export default function ModelDetail({ params }: { params: Promise<{ slug: string
                       <div className="text-xs text-slate-500">{formatKickoff(h.scheduledAt)}</div>
                     </td>
                     <td className="p-3">{formatScore(h.predictedHomeScore, h.predictedAwayScore)}</td>
-                    <td className="p-3">{formatScore(h.actualHomeScore, h.actualAwayScore)}</td>
+                    <td className="p-3">{formatMatchResult({
+                      homeScore90: h.actualHomeScore,
+                      awayScore90: h.actualAwayScore,
+                      homeScoreAfterExtraTime: h.actualHomeScoreAfterExtraTime,
+                      awayScoreAfterExtraTime: h.actualAwayScoreAfterExtraTime,
+                      homePenaltyScore: h.actualHomePenaltyScore,
+                      awayPenaltyScore: h.actualAwayPenaltyScore,
+                      resultType: h.resultType
+                    })}</td>
                     <td className="p-3 text-xs text-slate-400">{h.promptVersion ?? "—"}</td>
                     <td className="p-3 text-right"><ScoreBadge points={h.points} /></td>
                   </tr>

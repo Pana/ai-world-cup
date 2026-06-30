@@ -143,6 +143,20 @@ export interface PromptVersion {
   matchCount: number;
 }
 
+export interface ScoringRule {
+  id: number;
+  code: string;
+  name: string;
+  predictionType: "match" | "tournament_podium" | string;
+  points: Num;
+  priority: number;
+  stackable: 0 | 1;
+  conditions: unknown;
+  effectiveFrom: string;
+  effectiveTo: string | null;
+  active: 0 | 1;
+}
+
 export interface Stage {
   id: number;
   name: string;

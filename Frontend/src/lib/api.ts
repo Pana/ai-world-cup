@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { API_V1, TOURNAMENT_SLUG } from "@/lib/constants";
 import type {
   DebateStatement, LeaderboardRow, ModelDetail, ModelSummary, MatchDetail,
-  MatchSummary, PromptVersion, Stage, Tournament, UserLeaderboardRow, UserProfile
+  MatchSummary, PromptVersion, ScoringRule, Stage, Tournament, UserLeaderboardRow, UserProfile
 } from "@/types/api";
 
 async function fetcher<T>(url: string): Promise<T> {
@@ -52,6 +52,12 @@ export function useModels() {
 export function usePrompts() {
   return useSWR<PromptVersion[]>(
     `${API_V1}/tournaments/${TOURNAMENT_SLUG}/prompts`, fetcher
+  );
+}
+
+export function useScoringRules() {
+  return useSWR<ScoringRule[]>(
+    `${API_V1}/tournaments/${TOURNAMENT_SLUG}/scoring-rules`, fetcher
   );
 }
 

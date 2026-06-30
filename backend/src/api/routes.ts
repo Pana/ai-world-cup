@@ -252,6 +252,23 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
     );
   });
 
+  app.get("/api/v1/tournaments/:slug/scoring-rules", async (request) => {
+    const { slug } = slugParams.parse(request.params);
+    return queryRows<RowDataPacket[]>(
+      `SELECT
+         sr.id, sr.code, sr.name, sr.prediction_type AS predictionType,
+         sr.points, sr.priority, sr.is_stackable AS stackable,
+         sr.conditions, sr.effective_from AS effectiveFrom,
+         sr.effective_to AS effectiveTo, sr.is_active AS active
+       FROM scoring_rules sr
+       JOIN tournaments t ON t.id = sr.tournament_id
+       WHERE t.slug = ?
+         AND sr.is_active = 1
+       ORDER BY sr.prediction_type, sr.priority, sr.code`,
+      [slug]
+    );
+  });
+
   app.get("/api/v1/tournaments/:slug/stages", async (request) => {
     const { slug } = slugParams.parse(request.params);
     return queryRows<RowDataPacket[]>(

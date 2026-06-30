@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Bot, CalendarDays, MessageSquareText, ScrollText, Trophy, UserRound } from "lucide-react";
+import { Bot, CalendarDays, MessageSquareText, Scale, ScrollText, Trophy, UserRound } from "lucide-react";
 
 export function Nav() {
   const links = [
     { href: "/", label: "Leaderboard", icon: Trophy },
     { href: "/matches", label: "Matches", icon: CalendarDays },
     { href: "/models", label: "Models", icon: Bot },
+    { href: "/rules", label: "Rules", icon: Scale },
     { href: "/debate", label: "Debate", icon: MessageSquareText },
     { href: "/prompts", label: "Prompts", icon: ScrollText },
     { href: "/play", label: "Play", icon: UserRound }

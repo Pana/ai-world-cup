@@ -14,13 +14,12 @@ describe("buildModelGatewayConfig", () => {
     });
   });
 
-  it("omits unsupported Doubao parameters and enables reasoning", () => {
+  it("omits unsupported Doubao parameters", () => {
     expect(
-      buildModelGatewayConfig("doubao", "bytedance-seed/seed-2.0-mini")
+      buildModelGatewayConfig("doubao", "bytedance-seed/seed-1.6")
     ).toEqual({
       provider: { require_parameters: true },
-      disabledParameters: ["seed"],
-      reasoning: { effort: "medium", exclude: true }
+      disabledParameters: ["seed", "reasoning"]
     });
   });
 });

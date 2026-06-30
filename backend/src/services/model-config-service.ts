@@ -88,8 +88,7 @@ export function buildModelGatewayConfig(
   if (slug === "doubao") {
     return {
       provider: { require_parameters: true },
-      disabledParameters: ["seed"],
-      reasoning: { effort: "medium", exclude: true }
+      disabledParameters: ["seed", "reasoning"]
     };
   }
 

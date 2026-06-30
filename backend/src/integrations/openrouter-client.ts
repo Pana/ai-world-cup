@@ -94,7 +94,7 @@ export async function createMatchPrediction(
     body.seed = request.seed;
   }
   const reasoning = asObject(request.extraConfig.reasoning);
-  if (reasoning) body.reasoning = reasoning;
+  if (reasoning && !disabledParameters.has("reasoning")) body.reasoning = reasoning;
 
   const startedAt = performance.now();
   const response = await fetch(`${config.OPENROUTER_BASE_URL}/chat/completions`, {
